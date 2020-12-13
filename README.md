@@ -1,6 +1,6 @@
 # yodots
-My dotfiles for:
-cvim (Chromium-vim)
+My dotfiles for:  \
+cvim (Chromium-vim) \
 karabiner
 
 # Extended Descriptions
