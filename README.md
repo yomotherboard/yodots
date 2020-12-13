@@ -1,5 +1,5 @@
 # yodots
-My dotfiles for:  \
+__My dotfiles for:__  \
 cvim (Chromium-vim) \
 karabiner
 
