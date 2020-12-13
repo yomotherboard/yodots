@@ -1,0 +1,707 @@
+""""""""""
+""""""""""
+""""""""""  _______ _       _           _     _______              ___ _                               _             
+"""""""""" (_______) |     | |         | |   (_______)            / __|_)                          _  (_)            
+""""""""""  _   ___| | ___ | |__  _____| |    _       ___  ____ _| |__ _  ____ _   _  ____ _____ _| |_ _  ___  ____  
+"""""""""" | | (_  | |/ _ \|  _ \(____ | |   | |     / _ \|  _ (_   __) |/ _  | | | |/ ___|____ (_   _) |/ _ \|  _ \ 
+"""""""""" | |___) | | |_| | |_) ) ___ | |   | |____| |_| | | | || |  | ( (_| | |_| | |   / ___ | | |_| | |_| | | | |
+""""""""""  \_____/ \_)___/|____/\_____|\_)   \______)___/|_| |_||_|  |_|\___ |____/|_|   \_____|  \__)_|\___/|_| |_|
+""""""""""                                                              (_____|                                      
+""""""""""
+""""""""""
+let mapleader = ";"
+
+map D :tabdetach<CR>
+map S gs
+map s :tabnew google
+
+map <C-r> :call reloadRC()<CR>
+reloadRC() -> {{
+	Mappings.parseLine("call :source PATH_TO_YOUR_CVIMRC<CR>");
+	console.log("cvimrc refreshed");
+}}
+""""""""""
+""""""""""
+"""""""""" cVIM COMMANDS
+""""""""""
+""""""""""
+""""" 
+""""" HELP
+""""" 
+" cVim documentation
+" full cVim github page
+      command dev open https://github.com/1995eaton/chromium-vim
+" mapping for search links
+map <C-/> openLinkSearchBar
+""""" 
+""""" WEBSITE SEARCHES
+""""" 
+let completionengines = ["amazon", "google", "imdb", "wikipedia", "wolframalpha", "youtube"]
+"""""    ___          __                          __    
+"""""   / _ \___ ___ / /____ ___ _________ ____  / /____
+"""""  / , _/ -_|_-</ __/ _ `/ // / __/ _ `/ _ \/ __(_-<
+""""" /_/|_|\__/___/\__/\_,_/\_,_/_/  \_,_/_//_/\__/___/
+""""" 
+"""  
+""""""""""
+""""""""""
+""""""""""   ______ _                 ______                   _    ___ _          _______            _                  
+""""""""""  / _____|_)  _            / _____)                 (_)  / __|_)        (_______)       _  (_)                 
+"""""""""" ( (____  _ _| |_ _____   ( (____  ____  _____  ____ _ _| |__ _  ____    _     _ ____ _| |_ _  ___  ____   ___ 
+""""""""""  \____ \| (_   _) ___ |   \____ \|  _ \| ___ |/ ___) (_   __) |/ ___)  | |   | |  _ (_   _) |/ _ \|  _ \ /___)
+""""""""""  _____) ) | | |_| ____|   _____) ) |_| | ____( (___| | | |  | ( (___   | |___| | |_| || |_| | |_| | | | |___ |
+"""""""""" (______/|_|  \__)_____)  (______/|  __/|_____)\____)_| |_|  |_|\____)   \_____/|  __/  \__)_|\___/|_| |_(___/ 
+""""""""""                                  |_|                                           |_|                            
+""""""""""
+""""""""""
+"""""    ___           __            __  
+"""""   / _ \___ _  __/ /____  ___  / /__
+"""""  / // / -_) |/ / __/ _ \/ _ \/ (_-<
+""""" /____/\__/|___/\__/\___/\___/_/___/
+"""""                                    
+site "devtools://*" {
+      map <leader>qs :execute querySelectorAll()
+}
+"""""        _   ___              
+"""""    ___| | / (_)_ _  ________
+"""""  _/ __/ |/ / /  ' \/ __/ __/
+""""" (_)__/|___/_/_/_/_/_/  \__/ 
+"""""                             
+
+"""""    ______  ______  __ 
+"""""   /  _/  |/  / _ \/ / 
+"""""  _/ // /|_/ / // / _ \
+""""" /___/_/  /_/____/_.__/
+"""""                       
+site "*://www.imdb.com/title/*" {
+	map 0 :call imdbSelectTest()<CR>
+	map gc :script document.querySelector("#titleCast").scrollIntoView()<CR>
+	map gf :script window.location.href = './fullcredits'<CR>
+	map gr :script document.querySelector("#titleRecs").scrollIntoView()<CR>
+}
+
+imdbSelectTest() -> {{
+	console.log("select test started);
+	Select.style("color: red");
+}}
+
+"""""    ___           __    ___           __   _____   
+"""""   / _ \__ ______/ /__ / _ \__ ______/ /__/ ___/__ 
+"""""  / // / // / __/  '_// // / // / __/  '_/ (_ / _ \
+""""" /____/\_,_/\__/_/\_\/____/\_,_/\__/_/\_\\___/\___/
+"""""                                                   
+site "*://duckduckgo.com/*" {
+	call duckDuckGoSetSelectedResultCSS
+	map / :call duckDuckNewSearch()<CR>
+	map j :call duckDuckGoSelectResult(1)<CR>
+	map k :call duckDuckGoSelectResult(-1)<CR>
+	map <Enter> :call duckDuckGoOpenResult()<CR>
+	map <Space> :call duckDuckGoOpenResult()<CR>
+	map a :call duckDuckGoTab("All")<CR>
+	map i :call duckDuckGoTab("Images")<CR>
+	map v :call duckDuckGoTab("Videos")<CR>
+	map n :call duckDuckGoTab("News")<CR>
+	map m :call duckDuckGoTab("Maps")<CR>
+	map s :call duckDuckGoTab("Shopping")<CR>
+}
+duckDuckNewSearch() -> {{
+	  document.querySelector("#search_form_input").select();
+	  window.scrollTo(0,0);
+}}
+duckDuckGoSetSelectedResultCSS() -> {{
+	let adStyle =
+		`<style>
+			div.result--ad, .module-slot {
+	            display: none;
+	        }
+		</style>`;
+	document.head.insertAdjacentHTML("beforeend", adStyle);
+
+	let resultStyle = 
+	`<style id="current_result_style" rn="0">
+		div#r1-0 {
+      		border-left: 5px solid grey;
+			background-color: #282828;
+		}
+		</style>`;
+
+	document.head.insertAdjacentHTML("beforeend", resultStyle);
+}}
+duckDuckGoSelectResult(d) -> {{
+	let i = parseInt(document.querySelector("#current_result_style").getAttribute("rn"))+d;
+
+	if (i == -1) { 
+		scrollTo(0,0);
+		return "";
+	}
+	
+	for (x of document.querySelectorAll("#current_result_style")) { 
+		  x.remove();
+	}
+	let resultStyle = 
+		`<style id="current_result_style" rn=` + i + `>
+			div#r1-`+i+` {
+                		border-left: 5px solid grey;
+				background-color: #282828;
+			}
+		</style>`;
+	
+	document.head.insertAdjacentHTML("beforeend", resultStyle);	
+
+	window.scrollBy( 0, document.querySelector("#r1-"+i).getBoundingClientRect().y - 250 );
+	
+	document.querySelector("#r1-0").classList.remove("highlight");
+}}
+duckDuckGoOpenResult() -> {{
+	let i = parseInt(document.querySelector("#current_result_style").getAttribute("rn"));
+
+	document.querySelector("#r1-"+i).click();
+}}
+duckDuckGoTab(s) -> {{
+	for (x of document.querySelectorAll("#duckbar_static> li> a")) {
+	    if (x.innerText === s) x.click();
+	}
+}}
+
+"""""   _____               __   
+"""""  / ___/__  ___  ___ _/ /__ 
+""""" / (_ / _ \/ _ \/ _ `/ / -_)
+""""" \___/\___/\___/\_, /_/\__/ 
+"""""               /___/        
+ 
+site '*://*.google.com/search*' {
+      unmap j
+      unmap k
+      unmap /
+      unmap l
+      unmap h
+      unmap z
+" TAB NAVIGATION
+      map a :call googleNavigateTabs("All")<CR>
+      map n :call googleNavigateTabs("News")<CR>
+      map v :call googleNavigateTabs("Videos")<CR>
+      map b :call googleNavigateTabs("Books")<CR>
+      map s :call googleNavigateTabs("Shopping")<CR>
+      map f :call googleNavigateTabs("Finance")<CR>
+      map i :call googleNavigateTabs("Images")<CR>
+      map m :call googleNavigateTabs("Maps")<CR>
+" RESULT FILTERING
+      map <leader>fat :call googleFilterBy("")<CR>
+      map <leader>fy :call googleFilterBy("y")<CR>
+      map <leader>fm :call googleFilterBy("m")<CR>
+      map <leader>fw :call googleFilterBy("w")<CR>
+      map <leader>fd :call googleFilterBy("d")<CR>
+      map <leader>fh :call googleFilterBy("h")<CR>
+      map <leader>= :call googleFilterVerbatim()<CR>
+      map <leader>- :call googleFilterClear()<CR>
+}
+site '*://*.google.com/maps*' {
+      unmap a
+      unmap i
+      unmap n
+      unmap v
+      unmap b
+      unmap s
+      unmap f
+	map <leader>tg :call googleMapsToggleLayer(0)<CR>
+	map <leader>tf :call googleMapsToggleLayer(1)<CR>
+	map <leader>tp :call googleMapsToggleLayer(2)<CR>
+	map <leader>tb :call googleMapsToggleLayer(3)<CR>
+	map <leader>ts :call googleMapsToggleLayer(4)<CR>
+	map <leader>gs :call googleMapsToggleWidget(0)<CR>
+	map <leader>gp :call googleMapsToggleWidget(1)<CR>
+	map <leader>gc :call googleMapsToggleWidget(2)<CR>
+	map <leader>gt :call googleMapsToggleWidget(3)<CR>
+	map <leader>yy :call googleMapsToggleWidget(4)<CR>
+	map <leader>ha :call googleMapsToggleWidget(5)<CR>
+	map <leader>ml :call googleMapsMarkLocation()<CR>
+	map ] :call googleMapsMenuNav(1)<CR>
+	map / :call googleMapsEscape<CR>
+	map G :script document.querySelectorAll("button[aria-label=Directions]")[1].click()<CR>
+}
+site '*://*.google.com/scholar*' {
+      unmap j
+      unmap k
+}
+""" 
+""" TAB NAVIGATION
+""" 
+googleNavigateTabs(s) -> {{
+	document.querySelector("div.hdtb-dd-b").click();
+      setTimeout(() => {
+		var searchPages = document.querySelectorAll("#hdtb-msb-vis> div> a, #lb> div> g-menu> g-menu-item> div> a");
+		for (x of searchPages) { if (x.innerText === s) { x.click(); } };
+			  }, 50);
+}}
+""" 
+""" RESULT FILTERING
+""" 
+googleFilterBy(s) -> {{
+      var idQuery = "#qdr_" + s + "> a";
+      document.querySelectorAll(idQuery)[0].click();
+}}
+googleFilterVerbatim() -> {{
+      document.querySelectorAll("#li_1.hdtbItm> a")[0].click();
+}}
+googleFilterClear() -> {{
+      document.querySelectorAll("#hdtb-rst")[0].click();
+}}
+""" 
+""" GOOGLE MAPS
+""" 
+googleMapsToggleLayer(i) -> {{
+	document.querySelector("button[aria-label=Menu]").click();
+	setTimeout(() => {
+		document.querySelector("ul[aria-label=Layers]").querySelectorAll("li> div> button, li> button")[i].click();
+		}, 40);
+}}
+googleMapsToggleWidget(i) -> {{
+	document.querySelector("button[aria-label=Menu]").click();
+	setTimeout(() => {
+		document.querySelectorAll("ul.widget-settings-list")[2].querySelectorAll("li")[i].querySelector("button, jsl> a, a").click()
+		}, 50);
+}}
+googleMapsEscape() -> {{
+	var clearButton = document.querySelector("[aria-label='Clear search']");
+	if (clearButton.style.visibility === "") {
+		clearButton.click();
+	}
+}}
+googleMapsMarkLocation() -> {{
+	document.querySelector("div[data-value=Save]").click();
+	Mappings.parseLine("call :call googleMapsMenuNav(0)<CR>");
+}}
+googleMapsMenuNav(i) -> {{
+	var index = -1;
+	for (x of document.querySelectorAll(".action-menu-entry").entries()) {
+	    if(window.getComputedStyle(x[1]).border === "3px solid rgb(128, 128, 128)") {
+			index = x[0];
+		}
+	}
+	var style = "";
+	if (i == 0) {
+		index = 0;
+		let style = `<style> 
+			ul[role=menu] > li.action-menu-entry:nth-of-type(2){
+				border: 3px grey solid;
+			}
+		</style>`;
+		document.head.insertAdjacentHTML("beforeend", style);
+	} else {
+		let style = `<style> 
+			ul[role=menu] > li.action-menu-entry:nth-of-type(${index+2}){
+				border: none;
+				}
+			ul[role=menu] > li.action-menu-entry:nth-of-type(${index+2+i}){
+				border: 3px grey solid;
+				}
+		</style>`;
+		document.head.insertAdjacentHTML("beforeend", style);
+		}
+}}
+"""""    ___                          
+"""""   / _ | __ _  ___ ____ ___  ___ 
+"""""  / __ |/  ' \/ _ `/_ // _ \/ _ \
+""""" /_/ |_/_/_/_/\_,_//__/\___/_//_/
+"""""
+""" GLOBAL
+site '*://www.amazon.com/*' {
+      unmap /
+}
+""" SEARCH
+site '*://*.amazon.com/s*' {
+      unmap j
+      unmap k
+      unmap /
+      unmap l
+      unmap h
+}
+""" PRODUCT PAGE
+site '*://www.amazon.com/*dp/*' {
+	map ac :call amazonAddToCart()<CR>
+	map gc :script document.querySelector("#nav-cart").click()<CR>
+	map go :script document.querySelector("#nav-orders").click()<CR>
+	map gs :script document.querySelector("#productDetails").scrollIntoView()<CR>
+	map gv :script document.querySelector("#reviewsMedley").scrollIntoView()<CR>
+      map <leader>smart :call amazonAddToList("Smart Home")<CR>
+}
+amazonAddToList(str) -> {{
+      document.querySelector("span#wl-inline-wrapper").click();
+	/* finish */
+}}
+amazonAddToCart() -> {{
+	document.querySelector("#add-to-cart-button").focus();
+     	document.querySelector("#add-to-cart-button").click();
+}}
+
+"""""    _  __    __  ______     
+"""""   / |/ /__ / /_/ _/ (_)_ __
+"""""  /    / -_) __/ _/ / /\ \ /
+""""" /_/|_/\__/\__/_//_/_//_\_\ 
+"""""                            
+site '*://*.netflix.com/browse' {
+      map / :script document.getElementsByClassName("searchTab")[0].click()<CR>
+      map <leader>tv :call netflixGoToGenreMain(83)<CR>
+      map <leader>mov :call netflixGoToGenreMain(34399)<CR>
+      map <leader>act :call netflixGoToGenre(1365)<CR>
+}
+netflixGoToGenreMain(i) -> {{
+      var cmd_str = "[href=\'/browse/genre/" + i + "\']";
+      document.querySelector(".tabbed-primary-navigation").querySelector(cmd_str).click();
+}}
+netflixGoToGenre(i) -> {{
+      var cmd_str = ".sub-menu-list> li> a[href*=\'" + i + "\']";
+      document.querySelector("[label=Genres]> [role=button]").click();
+      document.querySelector(cmd_str).click();
+}}
+netflixGoToGenreURL(i) -> {{
+      var genre_url = "https://www.netflix.com/browse/genre/" + i;
+      window.open(genre_url,"_self");
+}}
+"""""  __  __         ______     __      
+"""""  \ \/ /__  __ _/_  __/_ __/ /  ___ 
+"""""   \  / _ \/ // // / / // / _ \/ -_)
+"""""   /_/\___/\_,_//_/  \_,_/_.__/\__/ 
+"""""                                    
+site '*://*.youtube.com/results*' {
+      unmap /
+	unmap j
+	unmap k
+}
+site '*://*.youtube.com/watch*' {
+      unmap f
+" comment
+      map <leader>com :call youtubeComment()<CR>
+" open notifications dropdown
+      map <leader>gn :script document.querySelector("#buttons.ytd-masthead> [class*='notification']").click()<CR>
+" skip ad
+      map - :script document.getElementsByClassName("ytp-ad-skip-button ytp-button")[0].click()<CR>
+" get url for video at current time
+      map <leader>yt :call getCurrentTime<CR>
+" open settings menu
+      map <leader>set :script document.querySelectorAll("div.ytp-right-controls> button")[2].click()<CR>
+" navigate to channel from video
+      map <leader>gc :script document.querySelector(".ytd-channel-name> a").click()<CR>
+" subscribe to channel
+      map <leader>sub :call subscribeToChannel<CR>
+      map <leader>uns :call unsubscribeFromChannel<CR>
+" like and dislike
+      map <leader>yes :script document.querySelector("[aria-label^='like this']").click()<CR>
+" preview all
+      map <leader>prev :call youtubePreviewAll<CR>
+""" ?!?!?!?!?!?     |
+""" SET VOLUME      | need to figure out how to access youtube player methods at div#movie_player
+""" ?!?!?!?!?!?     |
+      map <leader>v0 :call setVolumeYoutube(0)<CR>
+      map <leader>v1 :call setVolumeYoutube(10)<CR>
+      map <leader>v2 :call setVolumeYoutube(20)<CR>
+      map <leader>v3 :call setVolumeYoutube(30)<CR>
+      map <leader>v4 :call setVolumeYoutube(40)<CR>
+      map <leader>v5 :call setVolumeYoutube(50)<CR>
+      map <leader>v6 :call setVolumeYoutube(60)<CR>
+      map <leader>v7 :call setVolumeYoutube(70)<CR>
+      map <leader>v8 :call setVolumeYoutube(80)<CR>
+      map <leader>v9 :call setVolumeYoutube(90)<CR>
+      map <leader>vv :call setVolumeYoutube(100)<CR>
+"""
+""" PLAY NEXT VIDEO
+"""
+      map <leader>n0 :call playNextVideoFromAutoplay<CR>
+      map <leader>n1 :call playNextVideoFromSuggestions(1)<CR>
+      map <leader>n2 :call playNextVideoFromSuggestions(2)<CR>
+      map <leader>n3 :call playNextVideoFromSuggestions(3)<CR>
+      map <leader>n4 :call playNextVideoFromSuggestions(4)<CR>
+      map <leader>n5 :call playNextVideoFromSuggestions(5)<CR>
+      map <leader>n6 :call playNextVideoFromSuggestions(6)<CR>
+      map <leader>n7 :call playNextVideoFromSuggestions(7)<CR>
+      map <leader>n8 :call playNextVideoFromSuggestions(8)<CR>
+      map <leader>n9 :call playNextVideoFromSuggestions(9)<CR>
+"""
+""" PLAY NEXT IN QUE
+"""
+      map ] :call youtubePlayNextFromQue()<CR>
+      map [ :call youtubePlayPreviousFromQue()<CR>      
+"""
+""" SETTINGS CONTROL MAPPINGS
+"""
+      map <leader>cc :call toggleClosedCaptions<CR>
+      map <leader>qq :call openQualitySettings<CR>
+      map <leader>q1 :call setQuality(1)<CR>
+      map <leader>q2 :call setQuality(2)<CR>
+      map <leader>q3 :call setQuality(3)<CR>
+      map <leader>q4 :call setQuality(4)<CR>
+      map <leader>q5 :call setQuality(5)<CR>
+      map <leader>q6 :call setQuality(6)<CR>
+      map <leader>q7 :call setQuality(7)<CR>
+      map <leader>pp :call openPlaybackSpeedSettings(1)<CR>
+      map <leader>p1 :call setPlaybackSpeed(1)<CR>
+      map <leader>p2 :call setPlaybackSpeed(2)<CR>
+      map <leader>p3 :call setPlaybackSpeed(3)<CR>
+      map <leader>p4 :call setPlaybackSpeed(4)<CR>
+      map <leader>p5 :call setPlaybackSpeed(5)<CR>
+      map <leader>p6 :call setPlaybackSpeed(6)<CR>
+      map <leader>p7 :call setPlaybackSpeed(7)<CR>
+      map <leader>p8 :call setPlaybackSpeed(8)<CR>
+      map <leader>p9 :call setPlaybackSpeed(9)<CR>
+      map <leader>p0 :call setCustomPlaybackSpeed()<CR>
+"""
+""" WATCH LATER MAPPINGS
+"""
+      map <leader>wl0 :call youtubeWatchLaterOrQue(0, "wl")<CR>
+      map <leader>wl1 :call youtubeWatchLaterOrQue(1, "wl")<CR>
+      map <leader>wl2 :call youtubeWatchLaterOrQue(2, "wl")<CR>
+      map <leader>wl3 :call youtubeWatchLaterOrQue(3, "wl")<CR>
+      map <leader>wl4 :call youtubeWatchLaterOrQue(4, "wl")<CR>
+      map <leader>wl5 :call youtubeWatchLaterOrQue(5, "wl")<CR>
+      map <leader>wl6 :call youtubeWatchLaterOrQue(6, "wl")<CR>
+      map <leader>wl7 :call youtubeWatchLaterOrQue(7, "wl")<CR>
+      map <leader>wl8 :call youtubeWatchLaterOrQue(8, "wl")<CR>
+      map <leader>wl9 :call youtubeWatchLaterOrQue(9, "wl")<CR>
+      map <leader>wl,10 :call youtubeWatchLaterOrQue(10, "wl")<CR>
+      map <leader>wl,11 :call youtubeWatchLaterOrQue(11, "wl")<CR>
+      map <leader>wl,12 :call youtubeWatchLaterOrQue(12, "wl")<CR>
+      map <leader>wl,13 :call youtubeWatchLaterOrQue(13, "wl")<CR>
+      map <leader>wl,14 :call youtubeWatchLaterOrQue(14, "wl")<CR>
+      map <leader>wl,15 :call youtubeWatchLaterOrQue(15, "wl")<CR>
+      map <leader>wl,16 :call youtubeWatchLaterOrQue(16, "wl")<CR>
+      map <leader>wl,17 :call youtubeWatchLaterOrQue(17, "wl")<CR>
+      map <leader>wl,18 :call youtubeWatchLaterOrQue(18, "wl")<CR>
+      map <leader>wl,19 :call youtubeWatchLaterOrQue(19, "wl")<CR>
+      map <leader>wl,20 :call youtubeWatchLaterOrQue(20, "wl")<CR>
+      map <leader>wl,21 :call youtubeWatchLaterOrQue(21, "wl")<CR>
+      map <leader>wl,22 :call youtubeWatchLaterOrQue(22, "wl")<CR>
+      map <leader>wl,23 :call youtubeWatchLaterOrQue(23, "wl")<CR>
+      map <leader>wl,24 :call youtubeWatchLaterOrQue(24, "wl")<CR>
+      map <leader>wl,25 :call youtubeWatchLaterOrQue(25, "wl")<CR>
+      map <leader>wl,26 :call youtubeWatchLaterOrQue(26, "wl")<CR>
+      map <leader>wl,27 :call youtubeWatchLaterOrQue(27, "wl")<CR>
+      map <leader>wl,28 :call youtubeWatchLaterOrQue(28, "wl")<CR>
+      map <leader>wl,29 :call youtubeWatchLaterOrQue(29, "wl")<CR>
+      map <leader>wl,30 :call youtubeWatchLaterOrQue(30, "wl")<CR>
+      map <leader>wl,31 :call youtubeWatchLaterOrQue(31, "wl")<CR>
+      map <leader>wl,32 :call youtubeWatchLaterOrQue(32, "wl")<CR>
+      map <leader>wl,33 :call youtubeWatchLaterOrQue(33, "wl")<CR>
+      map <leader>wl,34 :call youtubeWatchLaterOrQue(34, "wl")<CR>
+      map <leader>wl,35 :call youtubeWatchLaterOrQue(35, "wl")<CR>
+      map <leader>wl,36 :call youtubeWatchLaterOrQue(36, "wl")<CR>
+      map <leader>wl,37 :call youtubeWatchLaterOrQue(37, "wl")<CR>
+      map <leader>wl,38 :call youtubeWatchLaterOrQue(38, "wl")<CR>
+      map <leader>wl,39 :call youtubeWatchLaterOrQue(39, "wl")<CR>
+"""
+""" ADD TO QUE MAPPINGS
+""" ???build removal???      *youtube has a bug where add to que button doesn't reset when video is removed from que
+      map <leader>qu0 :call youtubeWatchLaterOrQue(0, "qu")<CR>
+      map <leader>qu1 :call youtubeWatchLaterOrQue(1, "qu")<CR>
+      map <leader>qu2 :call youtubeWatchLaterOrQue(2, "qu")<CR>
+      map <leader>qu3 :call youtubeWatchLaterOrQue(3, "qu")<CR>
+      map <leader>qu4 :call youtubeWatchLaterOrQue(4, "qu")<CR>
+      map <leader>qu5 :call youtubeWatchLaterOrQue(5, "qu")<CR>
+      map <leader>qu6 :call youtubeWatchLaterOrQue(6, "qu")<CR>
+      map <leader>qu7 :call youtubeWatchLaterOrQue(7, "qu")<CR>
+      map <leader>qu8 :call youtubeWatchLaterOrQue(8, "qu")<CR>
+      map <leader>qu9 :call youtubeWatchLaterOrQue(9, "qu")<CR>
+      map <leader>qu,10 :call youtubeWatchLaterOrQue(10, "qu")<CR>
+      map <leader>qu,11 :call youtubeWatchLaterOrQue(11, "qu")<CR>
+      map <leader>qu,12 :call youtubeWatchLaterOrQue(12, "qu")<CR>
+      map <leader>qu,13 :call youtubeWatchLaterOrQue(13, "qu")<CR>
+      map <leader>qu,14 :call youtubeWatchLaterOrQue(14, "qu")<CR>
+      map <leader>qu,15 :call youtubeWatchLaterOrQue(15, "qu")<CR>
+      map <leader>qu,16 :call youtubeWatchLaterOrQue(16, "qu")<CR>
+      map <leader>qu,17 :call youtubeWatchLaterOrQue(17, "qu")<CR>
+      map <leader>qu,18 :call youtubeWatchLaterOrQue(18, "qu")<CR>
+      map <leader>qu,19 :call youtubeWatchLaterOrQue(19, "qu")<CR>
+      map <leader>qu,20 :call youtubeWatchLaterOrQue(20, "qu")<CR>
+      map <leader>qu,21 :call youtubeWatchLaterOrQue(21, "qu")<CR>
+      map <leader>qu,22 :call youtubeWatchLaterOrQue(22, "qu")<CR>
+      map <leader>qu,23 :call youtubeWatchLaterOrQue(23, "qu")<CR>
+      map <leader>qu,24 :call youtubeWatchLaterOrQue(24, "qu")<CR>
+      map <leader>qu,25 :call youtubeWatchLaterOrQue(25, "qu")<CR>
+      map <leader>qu,26 :call youtubeWatchLaterOrQue(26, "qu")<CR>
+      map <leader>qu,27 :call youtubeWatchLaterOrQue(27, "qu")<CR>
+      map <leader>qu,28 :call youtubeWatchLaterOrQue(28, "qu")<CR>
+      map <leader>qu,29 :call youtubeWatchLaterOrQue(29, "qu")<CR>
+      map <leader>qu,30 :call youtubeWatchLaterOrQue(30, "qu")<CR>
+      map <leader>qu,31 :call youtubeWatchLaterOrQue(31, "qu")<CR>
+      map <leader>qu,32 :call youtubeWatchLaterOrQue(32, "qu")<CR>
+      map <leader>qu,33 :call youtubeWatchLaterOrQue(33, "qu")<CR>
+      map <leader>qu,34 :call youtubeWatchLaterOrQue(34, "qu")<CR>
+      map <leader>qu,35 :call youtubeWatchLaterOrQue(35, "qu")<CR>
+      map <leader>qu,36 :call youtubeWatchLaterOrQue(36, "qu")<CR>
+      map <leader>qu,37 :call youtubeWatchLaterOrQue(37, "qu")<CR>
+      map <leader>qu,38 :call youtubeWatchLaterOrQue(38, "qu")<CR>
+      map <leader>qu,39 :call youtubeWatchLaterOrQue(39, "qu")<CR>
+}
+"""
+""" PAGE LOADING METHODS
+"""
+"""
+""" MISC METHODS
+""" 
+youtubeComment() -> {{
+      comments_unloaded = (document.querySelector("#comments #header> *") === null);
+      document.querySelector("#comments").scrollIntoView();
+      window.scrollBy(0, -73);
+      if (comments_unloaded) {
+            setTimeout(() => { document.querySelector('div#placeholder-area> yt-formatted-string').click(); }, 1000);
+      } else {
+            document.querySelector('div#placeholder-area> yt-formatted-string').click();
+      }
+}}
+getCurrentTime() -> {{
+      document.querySelector("div.html5-video-player").dispatchEvent(new Event('contextmenu'));
+      document.querySelector(".ytp-popup.ytp-contextmenu").style.display = "";
+      document.querySelectorAll("div.ytp-menuitem")[2].click();
+      document.querySelector(".ytp-popup.ytp-contextmenu").style.display = "none";
+}}
+subscribeToChannel() -> {{
+      document.querySelector("div#container> div#top-row> div#subscribe-button> ytd-subscribe-button-renderer> paper-button").click();
+      setTimeout(() => { document.querySelector("yt-button-renderer#cancel-button> a> paper-button").click(); }, 0);
+}}
+unsubscribeFromChannel() -> {{
+      document.querySelector("div#container> div#top-row> div#subscribe-button> ytd-subscribe-button-renderer> paper-button").click();
+      setTimeout(() => { document.querySelector("yt-button-renderer#confirm-button> a> paper-button").click(); }, 0);
+}}
+youtubePreviewAll -> {{
+" can i remove previewAutoplayVideoDOM by just using selector ytd-compact-video-renderer?
+      var previewVideosDOM = document.querySelectorAll("ytd-watch-next-secondary-results-renderer> div#items> ytd-compact-video-renderer");
+      var previewAutoplayVideoDOM = document.querySelector("ytd-compact-autoplay-renderer> div#contents> ytd-compact-video-renderer")
+      previewAutoplayVideoDOM.dispatchEvent(new Event("mouseleave"));
+      for (x of previewVideosDOM) {
+            x.dispatchEvent(new Event("mouseleave"));
+      }
+      setTimeout(() => {
+            for (x of previewVideosDOM) {
+                  x.dispatchEvent(new Event("mouseenter"));
+            }
+            previewAutoplayVideoDOM.dispatchEvent(new Event("mouseenter"));
+      }, 100);
+      
+}}
+""" 
+""" SET VOLUME METHODS
+""" 
+setVolumeYoutube(i) -> {{
+      document.querySelector("div#movie_player").setVolume(i);
+}}
+"""
+""" PLAY NEXT VIDEO METHODS
+""" 
+playNextVideoFromAutoplay() -> {{
+      document.querySelectorAll("ytd-watch-next-secondary-results-renderer> div#items> ytd-compact-autoplay-renderer")[0].querySelector("a#thumbnail").click();
+}}
+playNextVideoFromSuggestions(i) -> {{
+      document.querySelectorAll("ytd-watch-next-secondary-results-renderer> div#items> ytd-compact-video-renderer")[i-1].querySelector("a#thumbnail").click();
+}}
+"""
+""" PLAY FROM QUE METHODS
+"""
+youtubePlayNextFromQue() -> {{
+      var m = 0;
+      currentSelected=false;
+      for (x of document.querySelectorAll("ytd-playlist-panel-video-renderer")) {
+            if (currentSelected) { m = x };
+            currentSelected = x.hasAttribute('selected');
+      }
+      m.querySelector("a").click();
+}}
+youtubePlayPreviousFromQue() -> {{
+      var m = 0;
+      currentSelected=false;
+      x = document.querySelectorAll("ytd-playlist-panel-video-renderer");
+      for (var i=0; x[i]; i++) {
+            currentSelected = x[i].hasAttribute('selected');
+            if (currentSelected) {
+                  x[i-1].querySelector("a").click();;
+            }
+      }
+}}
+"""
+""" SETTING CONTROLLER METHODS
+""" 
+toggleClosedCaptions() -> {{
+      document.querySelectorAll("div.ytp-right-controls> button")[1].click();
+}}
+openQualitySettings() -> {{
+      document.querySelectorAll("div.ytp-right-controls> button")[2].click();
+      document.querySelectorAll("div.ytp-popup.ytp-settings-menu> div> div>div")[4].click()
+}}
+setQuality(i) -> {{
+      document.querySelectorAll("div.ytp-right-controls> button")[2].click();
+      
+      var m = -1;
+      for (x of document.querySelectorAll("div.ytp-popup.ytp-settings-menu> div> div> div> div.ytp-menuitem-label")) {
+            if (x.innerHTML == "Quality") { m = x } 
+      }
+      m.click();
+      setTimeout(() => { document.querySelectorAll("div.ytp-popup.ytp-settings-menu> div> div>div")[i-1].click(); }, 300);
+}}
+openPlaybackSpeedSettings() -> {{
+      document.querySelectorAll("div.ytp-right-controls> button")[2].click();
+      document.querySelectorAll("div.ytp-popup.ytp-settings-menu> div> div>div")[2].click();
+}}
+setPlaybackSpeed(i) -> {{
+      document.querySelectorAll("div.ytp-right-controls> button")[2].click();
+      document.querySelectorAll("div.ytp-popup.ytp-settings-menu> div> div>div")[2].click();
+      var speeds = [].slice.call(document.querySelectorAll("div.ytp-popup.ytp-settings-menu> div> div>div"), 0).reverse();
+      if (i == 4) { i = 0; }
+      if (i > 4) { i -= 1; }
+      setTimeout(() => { speeds[8-i].click(); }, 300);
+      setTimeout(() => { document.body.click() }, 200);
+}}
+setCustomPlaybackSpeed(i) -> {{
+      document.querySelectorAll("div.ytp-right-controls> button")[2].click();
+      document.querySelectorAll("div.ytp-popup.ytp-settings-menu> div> div>div")[2].click();
+      document.querySelectorAll("div.ytp-popup.ytp-settings-menu> div> div> button")[0].click();
+}}
+youtubeWatchLaterOrQue( videoNumber, cmd_str ) -> {{
+      var latency = 3000;
+      var cmd = -1;
+      if ( cmd_str === "wl" ) cmd = 0;
+      if ( cmd_str === "qu" ) cmd = 1;
+      var previewVideosDOM = document.querySelectorAll("ytd-compact-video-renderer");
+      for (x of previewVideosDOM) {
+            x.dispatchEvent(new Event("mouseleave"));
+      }
+      var wlVideoDOM = previewVideosDOM[ videoNumber ];
+      console.log(wlVideoDOM);
+      setTimeout(() => { wlVideoDOM.dispatchEvent(new Event("mouseenter")); }, 0);
+      setTimeout(() => { wlVideoDOM.querySelector("div#hover-overlays> *"); }, 0);
+      setTimeout(() => { console.log(wlVideoDOM.querySelector("div#hover-overlays> *"));
+                         var wlButtonDOM = document.querySelectorAll("yt-icon.ytd-thumbnail-overlay-toggle-button-renderer")[cmd]
+                         console.log(wlButtonDOM);
+                         setTimeout(() => { wlButtonDOM.click(); }, 20 ); }, 4);
+      setTimeout(() => { wlVideoDOM.dispatchEvent(new Event("mouseleave")); }, latency);
+}}
+site '*://www.youtube.com/channel/*' {
+	map <leader>/ :call youtubeChannelPageSearch()<CR>
+}
+youtubeChannelPageSearch() -> {{
+	document.querySelectorAll("yt-icon-button> #button[aria-label=Search]")[1].click();
+}}
+"""""   ______ __  __ __     __ 
+"""""  / ___(_) /_/ // /_ __/ / 
+""""" / (_ / / __/ _  / // / _ \
+""""" \___/_/\__/_//_/\_,_/_.__/
+"""""                           
+site '*://github.com/*' {
+      unmap /
+}
+"""""  __  __    __   
+"""""  \ \/ /__ / /__ 
+"""""   \  / -_) / _ \
+"""""   /_/\__/_/ .__/
+"""""          /_/    
+site '*://yelp.com/*' {
+      map <leader>/ :script alert("")<CR>
+}
+let blacklists = ["https://www.wolframcloud.com/*","https://www.openvim.com/*"]
+let configpath = '/Users/jacobaustinbusby/.config/cvim/.cvimrc'
+set localconfig
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""
+""""" .cVimrc info
+"""""
+" h1 ascii art font url: http://patorjk.com/software/taag/#p=display&f=Rounded&t=h1text                *this could be better right?
+" h2 ascii art font url: http://patorjk.com/software/taag/#p=display&f=Small%20Slant&t=h2text

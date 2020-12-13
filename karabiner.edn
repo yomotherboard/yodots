@@ -1,0 +1,367 @@
+{:alone 500 :delay 50
+ :applications {
+                :Mail ["^com\\.apple\\.mail$"]
+                :Messages ["^com\\.apple\\.iChat$"]
+                :Chrome ["^com\\.google\\.Chrome$"]
+                :Finder ["^com\\.apple\\.finder$"]
+                :Excel ["^com\\.microsoft\\.Excel$"]
+                :Karabiner ["^org\\.pqrs\\.Karabiner-Elements\\.Preferences$"]
+                :OmniPlan ["^com\\.omnigroup\\.OmniPlan4$"]
+                :Terminal ["^com\\.apple\\.Terminal$"]
+                }
+
+ :input-sources {
+                 :us {
+                      :input-mode-id ""
+                      :input-source-id "com.apple.keylayout.US"
+                      :language "en"
+                      }
+                 }
+ :modifiers {
+             :hyper [:left_command :left_control :left_option :left_shift]
+             }
+ :templates {
+          ;meta
+             :kb-decr-multi "sh ~/.script/karabiner/kb_var_decr.sh"
+             :type      "~/.script/Type/ccclick t:\"%s\""
+          ;feedback
+             :anybar    "osascript -e 'tell application \"AnyBar\" to set image name to \"%s\"'"
+          ;automation
+             :alfred    "osascript -e 'tell application \"Alfred\\ 4\" to search'" 
+             :km        "osascript -e 'tell application \"Keyboard Maestro Engine\" to do script \"%s\"'"
+             :trigger   "open /Applications/Alfred\\ 4.app && osascript -e 'tell application \"Alfred 4\" to run trigger \"%s\" in workflow \"%s\" with argument \"%s\"'"
+          ;open
+             :open-gmail  "osascript -e 'tell application \"Google Chrome\" to open location \"https://mail.google.com/mail/u/%s/#inbox\"'"
+             :open-chromium   "osascript -e 'tell application \"Chromium\" to open location \"%s\"'"
+             :open      "open \"%s\""
+             :opena     "open -a \"%s\""
+          ;terminal
+             :vim       "osascript -e 'tell app \"Terminal\" to do script \"vim \" & \"%s\"'; open -a \"Terminal\""
+             :new-cl  "osascript -e 'tell app \"Terminal\" to do script \"%s\"'; open -a \"Terminal\""
+          ;audio
+             :bluetooth "/usr/local/bin/blueutil -p 1; /usr/local/bin/blueutil --connect \"%s\""
+             :bluetooth-p "/usr/local/bin/blueutil -p \"%s\"" 
+             :set-volume  "osascript -e 'set Volume \"%s\"*7/9'"
+          ;yabai
+             :yabai-focus-window    "/usr/local/bin/yabai -m window --focus \"%s\""
+             :yabai-focus-space    "/usr/local/bin/yabai -m space --focus \"%s\""
+             :yabai-insert  "/usr/local/bin/yabai -m window --insert \"%s\""
+             :yabai-move    "/usr/local/bin/yabai -m window --warp \"%s\""
+             :yabai-new-space   "~/.script/yabai/new_space.sh \"%s\""
+             :yabai-resize  "~/.script/yabai/resize.sh \"%s\""
+             :yabai-space    "/usr/local/bin/yabai -m window --space \"%s\""
+             :yabai-script    "~/.script/yabai/\"%s\""
+             }
+ :layers {
+          :fn-mode {:key :fn}
+          :hyper-mode {:key :caps_lock :alone {:key :escape}}
+          :tab-mode {:key :tab :alone {:key :tab}}
+          :yabai-window-mode {:key :w :condi :tab-mode}
+          :yabai-resize-mode {:key :s :condi :tab-mode}
+          :config-mode {:key :left_control :condi :fn-mode}
+          :audio-mode {:key :f10}
+          :network-mode {:key :f12}
+          }
+ :simlayers {
+             :email-launcher {:key :2 :modi :left_shift}
+             }
+ :main  [
+;;;;;  _______           _            
+;;;;; (_______)         | |           
+;;;;;  _  _  _  ___   __| |_____  ___ 
+;;;;; | ||_|| |/ _ \ / _  | ___ |/___)
+;;;;; | |   | | |_| ( (_| | ____|___ |
+;;;;; |_|   |_|\___/ \____|_____|___/ 
+;;;;;                                 
+
+         {
+          :des "Yabai - Focus Mode"
+          :rules [:tab-mode
+                  [:c [:yabai-focus-space "Code"]]
+                  [:d [:yabai-focus-space "Default"]]
+                  [:1 [:yabai-focus-space "custom1"]]
+                  [:2 [:yabai-focus-space "custom2"]]
+                  [:3 [:yabai-focus-space "custom3"]]
+                  [:4 [:yabai-focus-space "custom4"]]
+                  [:5 [:yabai-focus-space "custom5"]]
+                  [:6 [:yabai-focus-space "custom6"]]
+                  [:7 [:yabai-focus-space "custom7"]]
+                  [:8 [:yabai-focus-space "custom8"]]
+                  [:9 [:yabai-focus-space "custom9"]]
+                  [:h [:yabai-focus-window "west"]]
+                  [:j [:yabai-focus-window "south"]]
+                  [:k [:yabai-focus-window "north"]]
+                  [:l [:yabai-focus-window "east"]]
+                  ]
+          }
+          {
+           :des "Yabai - Window Mode"
+           :rules [
+                   [:!Oh [:yabai-move "west"]]
+                   [:!Oj [:yabai-move "south"]]
+                   [:!Ok [:yabai-move "north"]]
+                   [:!Ol [:yabai-move "east"]]
+                   [:!Oc [[:yabai-space "Code"][:yabai-focus-space "Code"]]]
+                   [:!Od [[:yabai-space "Default"][:yabai-focus-space "Default"]]]
+                   [:!Os ["~/.script/yabai/new_split_view.sh"]]
+                   [:!O1 [:yabai-new-space "1"]]
+                   [:!O2 [:yabai-new-space "2"]]
+                   [:!O3 [:yabai-new-space "3"]]
+                   [:!O4 [:yabai-new-space "4"]]
+                   [:!O5 [:yabai-new-space "5"]]
+                   [:!O6 [:yabai-new-space "6"]]
+                   [:!O7 [:yabai-new-space "7"]]
+                   [:!O8 [:yabai-new-space "8"]]
+                   [:!O9 [:yabai-new-space "9"]]
+                   ]
+           }
+         {
+          :des "Yabai - Insert Mode"
+          :rules [:yabai-window-mode
+                  ;[:c [:yabai-space "Code"] nil {:afterup [:yabai-focus-space "Code"]}]
+                  [:h [[:yabai-insert "west"]] nil {:afterup [:!Cn]}]
+                  [:j [[:yabai-insert "south"]] nil {:afterup [:!Cn]}]
+                  [:k [[:yabai-insert "north"]] nil {:afterup [:!Cn]}]
+                  [:l [[:yabai-insert "east"]] nil {:afterup [:!Cn]}]
+                  ]
+          }
+         {
+          :des "Yabai - Resize Mode"
+          :rules [:yabai-resize-mode
+                  [:h [:yabai-resize "left"]]
+                  [:j [:yabai-resize "bottom"]]
+                  [:k [:yabai-resize "top"]]
+                  [:l [:yabai-resize "right"]]
+                  ]
+          }       
+         {
+          :des "Hyper Mode Test"
+          :rules [:hyper-mode
+                  [[:a :h] [:opena "Audio Hijack"]]
+                  [[:a :l] [:opena "Alfred Preferences"]]
+                  [:c [:opena "Chromium"]]
+                  [:e [:opena "Mail"]]
+                  [:f [:opena "Finder"]]
+                  [:g [:opena "Google Chrome"]]
+                  [:h [:open-chromium "http://hassio:8123/lovelace-yaml/default_view"]]
+                  [[:k :e] [:opena "Karabiner-EventViewer"]]
+                  [[:k :p] [:opena "Karabiner-Elements"]]
+                  [[:k :m] [:opena "Keyboard Maestro"]]
+                  [:l [:opena "TeXShop"]]
+                  [:m [:opena "Messages"]]
+                  [:p [:opena "OmniPlan"]]
+                  [:r [:opena "Reminders"]]
+                  [:s [:opena "Script Editor"]]
+                  [:t [:opena "Terminal"]]
+                  [:return_or_enter [["vim-mode" 1]["normal-mode" 1]] :!vim-mode]
+                  [:return_or_enter [["vim-mode" 0]["normal-mode" 0]["insert-mode" 0]] :vim-mode]
+                  ]
+          }
+         {
+          :des "Config Launcher"
+          :rules [:fn-mode
+                  [:c [:vim "cfc"]]
+                  [:k [:vim "cfk"]]
+                  [:v [:vim "cfv"]]
+                  [:z [:vim "cfz"]]
+                  ]
+          }
+         {
+          :des "Audio Mode"
+          :rules [:audio-mode
+                  [:1 [:set-volume "1"]]
+                  [:2 [:set-volume "2"]]
+                  [:3 [:set-volume "3"]]
+                  [:4 [:set-volume "4"]]
+                  [:5 [:set-volume "5"]]
+                  [:6 [:set-volume "6"]]
+                  [:7 [:set-volume "7"]]
+                  [:8 [:set-volume "8"]]
+                  [:9 [:set-volume "9"]]
+                  [:0 [:set-volume "0"]]
+                  [:hyphen [:bluetooth-p "0"]]
+                  [:p [:bluetooth "Echo Plus-4BF"]]
+                  [:s [[:trigger "ah.fix" "yomotherboard.config.audio" "Broken Speaker Workaround"]["ah-running" 1]]]
+                  ]
+          }
+         {
+          :des "Network Mode"
+          :rules [:network-mode
+                  [:y [:new-cl "ssh ymb"]]
+                  [:h [:new-cl "ssh root@hassio"]]
+                  [:l [:new-cl "ssh lbk-hass"]]
+                  ]
+          }
+         {
+          :des "Email Launcher"
+          :rules [:email-launcher
+                  [:p [:open-gmail "0"]]
+                  [:b [:open-gmail "2"]]
+                  ]
+          }
+;;;;;        _          _______           _       
+;;;;;       (_)        (_______)         | |      
+;;;;;  _   _ _ ____     _  _  _  ___   __| |_____ 
+;;;;; | | | | |    \   | ||_|| |/ _ \ / _  | ___ |
+;;;;;  \ V /| | | | |  | |   | | |_| ( (_| | ____|
+;;;;;   \_/ |_|_|_|_|  |_|   |_|\___/ \____|_____)
+;;;;;                                             
+
+         {
+          :des "vim normal mode for all applications"
+          :rules [:normal-mode
+                  [:a [:right_arrow ["normal-mode" 0]["insert-mode" 1]]]
+                  [{:key :a :modi [:shift]} [:!Cright_arrow ["normal-mode" 0]["insert-mode" 1]]]
+                  [:b [:!Oleft_arrow]]
+                  [:e [:!Oright_arrow]]
+                  [:w [:!Oright_arrow :!Oright_arrow :!Oleft_arrow]]
+                  [:f :!Cf] ;;;;; FINISH
+                  [{:key :g :modi [:shift]} :!Cdown_arrow]
+                  [:h :left_arrow]
+                  [:j :down_arrow]
+                  [:k :up_arrow]
+                  [:l :right_arrow]
+                  [{:key :j :modi [:shift]} [:down_arrow :!Cleft_arrow :!Oright_arrow :!Oleft_arrow :!Cdelete_or_backspace :delete_or_backspace :spacebar]]
+                  [:i [["normal-mode" 0]["insert-mode" 1]]]
+                  [{:key :i :modi [:shift]} [:!Cleft_arrow ["normal-mode" 0]["insert-mode" 1]]]
+                  [:o [:!Cright_arrow :return_or_enter ["normal-mode" 0]["insert-mode" 1]]]
+                  [{:key :o :modi [:shift]} [:!Cleft_arrow :return_or_enter :up_arrow ["normal-mode" 0]["insert-mode" 1]]]
+                  [:p [:!Cright_arrow :return_or_enter :!Cv]]
+                  [{:key :p :modi [:shift]} [:!Cleft_arrow :return_or_enter :up_arrow :!Cv]]
+                  [:x [:delete_forward]]
+                  [:u [:!Cz]]
+                  [:0 [:!Cleft_arrow]]
+                  [{:key :4 :modi [:shift]} [:!Cright_arrow]]
+                  [:c [["change-mode" 1]["normal-mode" 0]]]
+                  [:d [["delete-mode" 1]["normal-mode" 0]]]
+                  [:f [["find-mode" 1]["normal-mode" 0]]]
+                  [:y [["yank-mode" 1]["normal-mode" 0]]]
+                  [:4 [["normal-mode" 0]["multi-mode" 1]["multi-count" 4]]]
+                ]
+          }
+         {
+          :des "vim - delete mode"
+          :rules [:delete-mode
+                  [:0 [:!Cdelete_or_backspace ["delete-mode" 0]["normal-mode" 1]]]
+                  [:b [:!Odelete_or_backspace ["delete-mode" 0]["normal-mode" 1]]]
+                  [:w [:!Oright_arrow :!Oright_arrow :!Oleft_arrow :!Odelete_or_backspace ["delete-mode" 0]["normal-mode" 1]]]
+                  [:d [:!Cright_arrow :!Cdelete_or_backspace :delete_or_backspace ["delete-mode" 0]["normal-mode" 1]]]
+                  ]
+          }
+         {
+          :des "vim - change mode"
+          :rules [:change-mode
+                  [:b [:!Odelete_or_backspace ["change-mode" 0]["insert-mode" 1]]]
+                  [:w [:!Odelete_forward ["change-mode" 0]["normal-mode" 0]["insert-mode" 1]]]
+                  [:c [:!Cright_arrow :!Cdelete_or_backspace :left_arrow ["change-mode" 0]["normal-mode" 0]["insert-mode" 1]]]
+                  ]
+          }
+         {
+          :des "vim - find mode"
+          :rules [:find-mode
+                  [:a [:!Cf :a :escape :delete_or_backspace ["find-mode" 0]["insert-mode" 1]]]
+                  ]
+          }
+         {
+          :des "vim - yank mode"
+          :rules [:yank-mode 
+                  [:y [:!Cright_arrow :!SCleft_arrow :!Cc :!Cright_arrow ["yank-mode" 0]["normal-mode" 1]]]
+                  [:w [:!SOright_arrow :!Cc :left_arrow ["yank-mode" 0]["normal-mode" 1]]]
+                  [:b [:!SOleft_arrow :!Cc :right_arrow ["yank-mode" 0]["normal-mode" 1]]]
+                  ]
+          }
+         {
+          :des "vim - multi mode"
+          :rules [:multi-mode
+                  [:a [:j [:kb-decr-multi]]]
+                  ]
+          }
+         {
+          :des "vim - insert mode"
+          :rules [:insert-mode
+                  [:escape [["normal-mode" 1]["insert-mode" 0]]]
+                ]
+          }
+;;;;;   ______       _            _                
+;;;;;  / _____)     (_)  _       | |               
+;;;;; ( (____  _ _ _ _ _| |_ ____| |__  _____  ___ 
+;;;;;  \____ \| | | | (_   _) ___)  _ \| ___ |/___)
+;;;;;  _____) ) | | | | | |( (___| | | | ____|___ |
+;;;;; (______/ \___/|_|  \__)____)_| |_|_____|___/ 
+;;;;;                                              
+          {
+           :des "Switch Numbers w/ Symbols"
+           :rules [:!symbol-switch
+                   [:f1 ["symbol-switch" 1]]
+                   :symbol-switch
+                   [:f1 ["symbol-switch" 0]]
+                   [:1 :!S1]
+                   [:2 :!S2]
+                   [:3 :!S3]
+                   [:4 :!S4]
+                   [:5 :!S5]
+                   [:6 :!S6]
+                   [:7 :!S7]
+                   [:8 :!S8]
+                   [:9 :!S9]
+                   [:0 :!S0]
+                   [{:key :1 :modi [:shift]} :1]
+                   [{:key :2 :modi [:shift]} :2]
+                   [{:key :3 :modi [:shift]} :3]
+                   [{:key :4 :modi [:shift]} :4]
+                   [{:key :5 :modi [:shift]} :5]
+                   [{:key :6 :modi [:shift]} :6]
+                   [{:key :7 :modi [:shift]} :7]
+                   [{:key :8 :modi [:shift]} :8]
+                   [{:key :9 :modi [:shift]} :9]
+                   [{:key :0 :modi [:shift]} :0]
+                   ]  
+           }
+          {
+           :des "cliclick test"
+           :rules [:Chrome
+                   [[:i :j :k] [:type ""]]
+                ]
+          }
+;;;;;  _______             _  _                   _
+;;;;; (_______)           | |(_)              _  (_)
+;;;;;  _______ ____  ____ | | _  ____ _____ _| |_ _  ___  ____   ___
+;;;;; |  ___  |  _ \|  _ \| || |/ ___|____ (_   _) |/ _ \|  _ \ /___)
+;;;;; | |   | | |_| | |_| | || ( (___/ ___ | | |_| | |_| | | | |___ |
+;;;;; |_|   |_|  __/|  __/ \_)_|\____)_____|  \__)_|\___/|_| |_(___/
+;;;;;         |_|   |_|
+;;;    __  ___
+;;;   /  |/  /__ ___ ___ ___ ____ ____ ___
+;;;  / /|_/ / -_|_-<(_-</ _ `/ _ `/ -_|_-<
+;;; /_/  /_/\__/___/___/\_,_/\_, /\__/___/
+;;;                         /___/
+          {
+           :des "Messages - vim navigation"
+           :rules [:Messages
+                   [:!Tj :!Ttab]
+                   [:!Tk :!TStab]
+                   [:!Ti [["messages-insert" 1]]]
+                   ]
+           }
+          {
+           :des "Messages - vim special insert mode"
+           :rules [:messages-insert
+                   [:d [:!COTd ["messages-insert" 0]]]
+                   [:p [:!COTi ["messages-insert" 0]]]
+                   [:s [:!COTs ["messages-insert" 0]]]
+                   [:escape [["messages-insert" 0]]]
+                   ]
+           }
+;;;   ____             _ ___  __
+;;;  / __ \__ _  ___  (_) _ \/ /__ ____
+;;; / /_/ /  ' \/ _ \/ / ___/ / _ `/ _ \
+;;; \____/_/_/_/_//_/_/_/  /_/\_,_/_//_/
+;;; 
+          {
+           :des "OmniPlan - vim navigation"
+           :rules [:OmniPlan
+                   [:!Cj :down_arrow]
+                   ]
+           }
+          ]
+}
