@@ -23,10 +23,10 @@ functions are defined in goku format by the format
 ```
 where `"..."` is a shell script and `%s` is replaced by your function argument.
 
-Here are some of my more useful functions with brief descriptions:
-`:vim "file path"` opens a new terminal with the file specified by path argument open in vim.
-`:new-cl "script"` opens a new terminal and runs the script given by the argument.
-`:bluetooth "device id"` powers on bluetooth and conncts to the bluetooth device given by the device id argument (uses [blueutil](https://github.com/toy/blueutil) for cli).
+Here are some of my more useful functions with brief descriptions: \
+`:vim "file path"` opens a new terminal with the file specified by path argument open in vim. \
+`:new-cl "script"` opens a new terminal and runs the script given by the argument. \
+`:bluetooth "device id"` powers on bluetooth and conncts to the bluetooth device given by the device id argument (uses [blueutil](https://github.com/toy/blueutil) for cli). \
 `:open-chromium "url"` opens a new chromium tab with the url given by the argument.
 
 
