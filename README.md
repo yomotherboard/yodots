@@ -24,12 +24,12 @@ Alternatively, those with low letter frequency should be used for frequently enc
 Binding this way is ideal. First, it ensures the highest probability that the first letter of the name of a site specific webpage item is available for binding. Second, it ensures that words which have a low letter frequency (i.e. are unlikely to start or belong to a target item's name) are used very frequently. Therefore, these bindings are memorized despite their less direct relationship with the items they represent.
 
 <ul>
-  gc : site specific
-  gf : site specific
-  gg : top of page
-  go : site specific
-  gx : specs(x)
-  gv : re(v)iews
+  gc : site specific \
+  gf : site specific \
+  gg : top of page \
+  go : site specific \
+  gx : specs(x) \
+  gv : re(v)iews \
   gz : suggestions(z)
 </ul>
 
