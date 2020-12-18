@@ -10,6 +10,29 @@ Extended descriptions for each config file
 My config file (.cvimrc) for cVim (vim bindings for chrome).
 The cVim project is no longer maintained by its owner, but it still works perfectly. I have [forked](https://github.com/yomotherboard/chromium-vim) the project and added a few things with more to come.
 
+## modes
+### select mode
+
+## browser functions (non-vim)
+### g (go)
+Go mode scrolls to specific sections of webpages and if applicable it collects the items of that section into the [selection list](#select-mode).
+
+Suffix letters that have a high letter frequency are reserved for site specific mappings. These should ideally be such intuitive choices that you could guess them without consulting the configuration. 
+
+Alternatively, those with low letter frequency should be used for frequently encountered webpage items (v -> reviews, x -> specs, z -> suggestions). The choice of letter in the latter case will generally be diaphonically similar to the word it represents.
+
+Binding this way is ideal. First, it ensures the highest probability that the first letter of the name of a site specific webpage item is available for binding. Second, it ensures that words which have a low letter frequency (i.e. are unlikely to start or belong to a target item's name) are used very frequently. Therefore, these bindings are memorized despite their less direct relationship with the items they represent.
+
+<ul>
+  gc : site specific
+  gf : site specific
+  gg : top of page
+  go : site specific
+  gx : specs(x)
+  gv : re(v)iews
+  gz : suggestions(z)
+</ul>
+
 ### Site-specific Behavior
 cVim bindings can be mapped in a url-specific manner. These bindings can be set to execute Javascript scripts, allowing for powerful site-specific behavior/navigation.
 
