@@ -7,6 +7,7 @@
                 :Excel ["^com\\.microsoft\\.Excel$"]
                 :Karabiner ["^org\\.pqrs\\.Karabiner-Elements\\.Preferences$"]
                 :OmniPlan ["^com\\.omnigroup\\.OmniPlan4$"]
+                :Preview ["^com\\.apple\\.Preview$"]
                 :Terminal ["^com\\.apple\\.Terminal$"]
                 }
 
@@ -38,16 +39,22 @@
           ;terminal
              :vim       "osascript -e 'tell app \"Terminal\" to do script \"vim \" & \"%s\"'; open -a \"Terminal\""
              :new-cl  "osascript -e 'tell app \"Terminal\" to do script \"%s\"'; open -a \"Terminal\""
+          ;brightness
+             :set-brightness  "/usr/local/bin/brightness $( bc -l <<< '%s / 9' )"
           ;audio
              :bluetooth "/usr/local/bin/blueutil -p 1; /usr/local/bin/blueutil --connect \"%s\""
              :bluetooth-p "/usr/local/bin/blueutil -p \"%s\"" 
              :set-volume  "osascript -e 'set Volume \"%s\"*7/9'"
+          ;wifi
+             :wifi-p    "networksetup -setairportpower en0 \"%s\""
           ;yabai
              :yabai-focus-window    "/usr/local/bin/yabai -m window --focus \"%s\""
              :yabai-focus-space    "/usr/local/bin/yabai -m space --focus \"%s\""
+             :yabai-fold    "~/.script/yabai/fold.sh \"%s\""
              :yabai-insert  "/usr/local/bin/yabai -m window --insert \"%s\""
              :yabai-move    "/usr/local/bin/yabai -m window --warp \"%s\""
              :yabai-new-space   "~/.script/yabai/new_space.sh \"%s\""
+             :yabai-new-named-space   "~/.script/yabai/new_named_space.sh \"%s\""
              :yabai-resize  "~/.script/yabai/resize.sh \"%s\""
              :yabai-space    "/usr/local/bin/yabai -m window --space \"%s\""
              :yabai-script    "~/.script/yabai/\"%s\""
@@ -56,9 +63,12 @@
           :fn-mode {:key :fn}
           :hyper-mode {:key :caps_lock :alone {:key :escape}}
           :tab-mode {:key :tab :alone {:key :tab}}
-          :yabai-window-mode {:key :w :condi :tab-mode}
+          :yabai-arrange-mode {:key :a :condi :tab-mode}
           :yabai-resize-mode {:key :s :condi :tab-mode}
+          :yabai-window-mode {:key :w :condi :tab-mode}
+          :yabai-fold-mode {:key :z :condi :tab-mode}
           :config-mode {:key :left_control :condi :fn-mode}
+          :brightness-mode {:key :f2}
           :audio-mode {:key :f10}
           :network-mode {:key :f12}
           }
@@ -95,24 +105,33 @@
                   ]
           }
           {
-           :des "Yabai - Window Mode"
-           :rules [
-                   [:!Oh [:yabai-move "west"]]
-                   [:!Oj [:yabai-move "south"]]
-                   [:!Ok [:yabai-move "north"]]
-                   [:!Ol [:yabai-move "east"]]
-                   [:!Oc [[:yabai-space "Code"][:yabai-focus-space "Code"]]]
-                   [:!Od [[:yabai-space "Default"][:yabai-focus-space "Default"]]]
-                   [:!Os ["~/.script/yabai/new_split_view.sh"]]
-                   [:!O1 [:yabai-new-space "1"]]
-                   [:!O2 [:yabai-new-space "2"]]
-                   [:!O3 [:yabai-new-space "3"]]
-                   [:!O4 [:yabai-new-space "4"]]
-                   [:!O5 [:yabai-new-space "5"]]
-                   [:!O6 [:yabai-new-space "6"]]
-                   [:!O7 [:yabai-new-space "7"]]
-                   [:!O8 [:yabai-new-space "8"]]
-                   [:!O9 [:yabai-new-space "9"]]
+           :des "Yabai - Arrange Mode"
+           :rules [:yabai-arrange-mode
+                   [:h [:yabai-move "west"]]
+                   [:j [:yabai-move "south"]]
+                   [:k [:yabai-move "north"]]
+                   [:l [:yabai-move "east"]]
+                   [:c [:yabai-new-named-space "Code"]]
+                   [:d [[:yabai-space "Default"][:yabai-focus-space "Default"]]]
+                   [:s ["~/.script/yabai/new_split_view.sh"]]
+                   [:1 [:yabai-new-space "1"]]
+                   [:2 [:yabai-new-space "2"]]
+                   [:3 [:yabai-new-space "3"]]
+                   [:4 [:yabai-new-space "4"]]
+                   [:5 [:yabai-new-space "5"]]
+                   [:6 [:yabai-new-space "6"]]
+                   [:7 [:yabai-new-space "7"]]
+                   [:8 [:yabai-new-space "8"]]
+                   [:9 [:yabai-new-space "9"]]
+                   ]
+           }
+          {
+           :des "Yabai - Fold Mode"
+           :rules [:yabai-fold-mode
+                   [:h [:yabai-fold "left"]]
+                   [:j [:yabai-fold "bottom"]]
+                   [:k [:yabai-fold "top"]]
+                   [:l [:yabai-fold "right"]]
                    ]
            }
          {
@@ -135,7 +154,7 @@
                   ]
           }       
          {
-          :des "Hyper Mode Test"
+          :des "Hyper Mode"
           :rules [:hyper-mode
                   [[:a :h] [:opena "Audio Hijack"]]
                   [[:a :l] [:opena "Alfred Preferences"]]
@@ -163,6 +182,7 @@
                   [:c [:vim "cfc"]]
                   [:k [:vim "cfk"]]
                   [:v [:vim "cfv"]]
+                  [:y [:new-cl "cfy"]]
                   [:z [:vim "cfz"]]
                   ]
           }
@@ -187,9 +207,11 @@
          {
           :des "Network Mode"
           :rules [:network-mode
+                  [:hyphen [:wifi-p "off"]]
+                  [:equal_sign [:wifi-p "on"]]
+                  [:h [:new-cl "ssh hass"]]
+                  [:l [:new-cl "ssh lbk"]]
                   [:y [:new-cl "ssh ymb"]]
-                  [:h [:new-cl "ssh root@hassio"]]
-                  [:l [:new-cl "ssh lbk-hass"]]
                   ]
           }
          {
@@ -197,6 +219,21 @@
           :rules [:email-launcher
                   [:p [:open-gmail "0"]]
                   [:b [:open-gmail "2"]]
+                  ]
+          }
+         {
+          :des "Brightness Mode"
+          :rules [:brightness-mode
+                  [:1 [:set-brightness "1"]]
+                  [:2 [:set-brightness "2"]]
+                  [:3 [:set-brightness "3"]]
+                  [:4 [:set-brightness "4"]]
+                  [:5 [:set-brightness "5"]]
+                  [:6 [:set-brightness "6"]]
+                  [:7 [:set-brightness "7"]]
+                  [:8 [:set-brightness "8"]]
+                  [:9 [:set-brightness "9"]]
+                  [:0 [:set-brightness "0"]]
                   ]
           }
 ;;;;;        _          _______           _       
@@ -236,7 +273,6 @@
                   [:d [["delete-mode" 1]["normal-mode" 0]]]
                   [:f [["find-mode" 1]["normal-mode" 0]]]
                   [:y [["yank-mode" 1]["normal-mode" 0]]]
-                  [:4 [["normal-mode" 0]["multi-mode" 1]["multi-count" 4]]]
                 ]
           }
          {
@@ -319,7 +355,7 @@
            }
           {
            :des "cliclick test"
-           :rules [:Chrome
+           :rules [:cli-test
                    [[:i :j :k] [:type ""]]
                 ]
           }
@@ -360,8 +396,62 @@
           {
            :des "OmniPlan - vim navigation"
            :rules [:OmniPlan
-                   [:!Cj :down_arrow]
+                   [:!Tj :down_arrow]
+                   [:!Tk :up_arrow]
                    ]
            }
+;;;    ___               _
+;;;   / _ \_______ _  __(_)__ _    __
+;;;  / ___/ __/ -_) |/ / / -_) |/|/ /
+;;; /_/  /_/  \__/|___/_/\__/|__,__/
+;;; 
+           {
+            :des "Preview - normal mode"
+            :rules [:Preview
+                    [:h :left_arrow]
+                    [:j :down_arrow]
+                    [:k :up_arrow]
+                    [:l :right_arrow]
+                    [:!Tj :!Odown_arrow]
+                    [:!Tk :!Oup_arrow]
+                    [:slash :!Cf]
+                    [:g ["preview-go" 1]]
+                    [{:key :slash :modi [:shift :command]} [:!SCslash ["preview-help" 1]]]
+                    [:m ["preview-mark" 1]]
+                    ]
+            } 
+           {
+            :des "Preview - go mode"
+            :rules [:preview-go
+                    [:c [:!CO3 ["preview-go" 0]]]
+                    [:n [:!CO4 ["preview-go" 0]]]
+                    [:m [:!CO5 ["preview-go" 0]]]
+                    [:p [:!COg ["preview-go" 0]]]
+                    ]
+            }
+           {
+            :des "Preview - help mode"
+            :rules [:preview-help
+                    [:escape [["preview-help" 0]]]
+                    [:return_or_enter [["preview-help" 0]]]
+                    ]
+            }
+           {
+            :des "Preview - mark mode"
+            :rules [:preview-mark
+                    [:m [:!Cd ["preview-mark" 0]]]
+                    ]
+            }
+;;;  ______              _           __
+;;; /_  __/__ ______ _  (_)__  ___ _/ /
+;;;  / / / -_) __/  ' \/ / _ \/ _ `/ /
+;;; /_/  \__/_/ /_/_/_/_/_//_/\_,_/_/
+;;; 
+           {
+            :des "Terminal - general"
+            :rules [:Terminal
+                    [:left_shift :left_shift nil {:alone :!Tn}]
+                    ]
+            }
           ]
 }
