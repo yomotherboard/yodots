@@ -55,7 +55,8 @@
              :yabai-move    "/usr/local/bin/yabai -m window --warp \"%s\""
              :yabai-new-space   "~/.script/yabai/new_space.sh \"%s\""
              :yabai-new-named-space   "~/.script/yabai/new_named_space.sh \"%s\""
-             :yabai-resize  "~/.script/yabai/resize.sh \"%s\""
+             :yabai-open-window    "~/.script/yabai/open_window.sh \"%s\""
+             :yabai-resize    "~/.script/yabai/resize.sh \"%s\""
              :yabai-space    "/usr/local/bin/yabai -m window --space \"%s\""
              :yabai-script    "~/.script/yabai/\"%s\""
              }
@@ -156,22 +157,22 @@
          {
           :des "Hyper Mode"
           :rules [:hyper-mode
-                  [[:a :h] [:opena "Audio Hijack"]]
-                  [[:a :l] [:opena "Alfred Preferences"]]
-                  [:c [:opena "Chromium"]]
-                  [:e [:opena "Mail"]]
-                  [:f [:opena "Finder"]]
-                  [:g [:opena "Google Chrome"]]
+                  [[:a :h] [:yabai-open-window "Audio Hijack"]]
+                  [[:a :l] [:yabai-open-window "Alfred Preferences"]]
+                  [:c [:yabai-open-window "Chromium"]]
+                  [:e [:yabai-open-window "Mail"]]
+                  [:f [:yabai-open-window "Finder"]]
+                  [:g [:yabai-open-window "Google Chrome"]]
                   [:h [:open-chromium "http://hassio:8123/lovelace-yaml/default_view"]]
-                  [[:k :e] [:opena "Karabiner-EventViewer"]]
-                  [[:k :p] [:opena "Karabiner-Elements"]]
-                  [[:k :m] [:opena "Keyboard Maestro"]]
-                  [:l [:opena "TeXShop"]]
-                  [:m [:opena "Messages"]]
-                  [:p [:opena "OmniPlan"]]
-                  [:r [:opena "Reminders"]]
-                  [:s [:opena "Script Editor"]]
-                  [:t [:opena "Terminal"]]
+                  [[:k :e] [:yabai-open-window "Karabiner-EventViewer"]]
+                  [[:k :p] [:yabai-open-window "Karabiner-Elements"]]
+                  [[:k :m] [:yabai-open-window "Keyboard Maestro"]]
+                  [:l [:yabai-open-window "TeXShop"]]
+                  [:m [:yabai-open-window "Messages"]]
+                  [:p [:yabai-open-window "OmniPlan"]]
+                  [:r [:yabai-open-window "Reminders"]]
+                  [:s [:yabai-open-window "Script Editor"]]
+                  [:t [:yabai-open-window "Terminal"]]
                   [:return_or_enter [["vim-mode" 1]["normal-mode" 1]] :!vim-mode]
                   [:return_or_enter [["vim-mode" 0]["normal-mode" 0]["insert-mode" 0]] :vim-mode]
                   ]
